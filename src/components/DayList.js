@@ -3,17 +3,20 @@ import DayListItem from "DayListItem";
 
 export default function DayList(props) {
   const { days, day, appointments, setState } = props;
-  const outputs = days.map(element => {
-    return (
-      <ul>
-        <DayListItem
-          name={element.name}
-          spots={element.spots}
-          selected={element.name === props.day}
-          setDay={props.setDay} />
-      </ul>
-    );
-  })
+  let outputs;
+  if (days) {
+    outputs = days.map(element => {
+      return (
+        <ul>
+          <DayListItem
+            name={element.name}
+            spots={element.spots}
+            selected={element.name === props.day}
+            setDay={props.setDay} />
+        </ul>
+      );
+    })
+  }
   return outputs;
 
 }

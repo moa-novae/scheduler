@@ -4,7 +4,8 @@ import axios from 'axios';
 
 import "components/Application.scss";
 import DayList from 'components/DayList'
-
+import Appointment from 'components/Appointment/index';
+import {getAppointmentsForDay} from '../helpers/selectors'
 
 
 export default function Application(props) {
@@ -17,23 +18,32 @@ export default function Application(props) {
 
   useEffect(() => {
     Promise.all([
-      axios.get('http://localhost:8001/api/days')
+      axios.get('/api/days')
         .then(response => response.data)
         .catch(function(error) {
           console.log(error);
         }),
-      axios.get('http://localhost:8001/api/appointments')
+      axios.get('/api/appointments')
         .then(response => response.data)
         .catch(function(error) {
           console.log(error);
         })
     ])
-    .then(all => {
-      setState(prev => ({ ...prev, "days": all[0], "appointments": all[1]}))
-    });
+      .then(all => {
+        setState(prev => ({ ...prev, "days": all[0], "appointments": all[1] }))
+      });
   }, [])
-
-
+  
+    const appointments = getAppointmentsForDay(state, state.day)
+    const appoint = (appointments).map((appointment) => {
+      return (
+        <Appointment
+          id={appointment.id}
+          time={appointment.time}
+          interview={appointment.interview} />
+      )
+    })
+  
   return (
     <main className="layout">
       <section className="sidebar">
@@ -59,7 +69,8 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
+        {appoint}
+        <Appointment id="last" time="5pm" />
       </section>
     </main>
   );
