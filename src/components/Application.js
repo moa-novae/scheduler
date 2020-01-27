@@ -26,38 +26,45 @@ export default function Application(props) {
       ...state.appointments[id],
       interview: { ...interview }
     };
-    return new Promise(function(resolve, reject) {
-      axios.put(`/api/appointments/${id}`, {
-        interview: {
-          student: interview.student,
-          interviewer: interview.interviewer
-        }
-      })
-        .then(
-          setState(state => ({
-            ...state,
-            appointments: { ...state.appointments, [id]: appointment }
+    const failFetch = {
+      ...state.appointments[id],
+      interview: { student: '', interviewer: null }
+    }
 
-          }))
-        )
-        .then(resolve('done'));
+    return axios.put(`/api/appointments/${id}`, {
+      interview: {
+        student: interview.student,
+        interviewer: interview.interviewer
+      }
     })
+      .then(res => {
+        setState(state => ({
+          ...state,
+          appointments: { ...state.appointments, [id]: appointment }
+        }))
+      }
+      )
+
+
   }
   function deleteInterview(id) {
     const appointment = {
       ...state.appointments[id],
       interview: null
     }
-    return new Promise(function(resolve, reject) {
-      axios.delete(`/api/appointments/${id}`)
-      .then(
-        setState(state => ({
-          ...state,
-          appointments: { ...state.appointments, [id]: appointment}
-        }))
+    return axios.delete(`/api/appointments/${id}`)
+      .then(res => {
+
+        setState(state =>
+          ({
+            ...state,
+            appointments: { ...state.appointments, [id]: appointment }
+          })
+        )
+      }
       )
-      .then(resolve('done'));
-    })
+
+
   }
 
 
@@ -99,9 +106,9 @@ export default function Application(props) {
         time={appointment.time}
         interview={interviewerProfile}
         interviewers={interviewersList}
-        bookInterview={bookInterview} 
+        bookInterview={bookInterview}
         deleteInterview={deleteInterview}
-        />
+      />
     )
   })
 
