@@ -6,92 +6,14 @@ import "components/Application.scss";
 import DayList from 'components/DayList'
 import Appointment from 'components/Appointment/index';
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from '../helpers/selectors'
-import useVisualMode from '../hooks/userVisualMode';
-import { resolvePlugin } from "@babel/core";
+import useApplicationData from '../hooks/useApplicationData';
+
 
 
 
 
 export default function Application(props) {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
-  const setDay = day => setState({ ...state, day });
-
-  function bookInterview(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const failFetch = {
-      ...state.appointments[id],
-      interview: { student: '', interviewer: null }
-    }
-
-    return axios.put(`/api/appointments/${id}`, {
-      interview: {
-        student: interview.student,
-        interviewer: interview.interviewer
-      }
-    })
-      .then(res => {
-        setState(state => ({
-          ...state,
-          appointments: { ...state.appointments, [id]: appointment }
-        }))
-      }
-      )
-
-
-  }
-  function deleteInterview(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    }
-    return axios.delete(`/api/appointments/${id}`)
-      .then(res => {
-
-        setState(state =>
-          ({
-            ...state,
-            appointments: { ...state.appointments, [id]: appointment }
-          })
-        )
-      }
-      )
-
-
-  }
-
-
-  useEffect(() => {
-
-    Promise.all([
-      axios.get('/api/days')
-        .then(response => response.data)
-        .catch(function(error) {
-          console.log(error);
-        }),
-      axios.get('/api/appointments')
-        .then(response => response.data)
-        .catch(function(error) {
-          console.log(error);
-        }),
-      axios.get('/api/interviewers')
-        .then(response => response.data)
-        .catch(function(error) {
-          console.log(error);
-        })
-    ])
-      .then(all => {
-        setState(prev => ({ ...prev, "days": all[0], "appointments": all[1], "interviewers": all[2] }))
-      });
-  }, [])
-
+  const { state, setDay, bookInterview, cancelInterview } = useApplicationData();
   const appointments = getAppointmentsForDay(state, state.day)
   const interviewersList = getInterviewersForDay(state, state.day)
 
@@ -107,7 +29,7 @@ export default function Application(props) {
         interview={interviewerProfile}
         interviewers={interviewersList}
         bookInterview={bookInterview}
-        deleteInterview={deleteInterview}
+        deleteInterview={cancelInterview}
       />
     )
   })
