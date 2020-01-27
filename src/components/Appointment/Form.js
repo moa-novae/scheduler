@@ -8,11 +8,12 @@ export default function Form(props) {
     name: '',
     interviewer: props.interviewer
   })
-  const [name, setName] = useState(prev => props.name || "");
-  const [interviewer, setInterviewer] = useState(prev => props.interviewer || null);
+  const [name, setName] = useState(prev => props.interview.student || "");
+  const [interviewer, setInterviewer] = useState(prev => props.interview.interviewer.id || null);
   const reset = () => {setName(''); setInterviewer(null)}
   const cancel = () => {reset(); props.onCancel(); }
-
+  console.log('name', name, 'interviewer', interviewer)
+  console.log('interview', props.interview)
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -20,7 +21,7 @@ export default function Form(props) {
           <input
             onChange={(e) => setName(e.target.value) }
             className="appointment__create-input text--semi-bold"
-            value={name}
+            value={name || ''}
             type="text"
             placeholder="Enter Student name"
   
@@ -31,7 +32,7 @@ export default function Form(props) {
         </form>
         <InterviewerList
           interviewers={props.interviewers}
-          interviewer={interviewer}
+          interviewer={interviewer || null}
           setInterviewer={setInterviewer} />
       </section>
       <section className="appointment__card-right">

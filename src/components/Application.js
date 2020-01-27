@@ -100,7 +100,8 @@ export default function Application(props) {
         interview={interviewerProfile}
         interviewers={interviewersList}
         bookInterview={bookInterview} 
-        deleteInterview={deleteInterview}/>
+        deleteInterview={deleteInterview}
+        />
     )
   })
 
