@@ -1,81 +1,59 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import { useReducer } from "react";
 
-export default function useApplicationData() {
-  const [state, setState] = useState({
+export function useApplicationData() {
+  const SET_DAY = 'SET_DAY'
+  const SET_APPLICATION_DATA = 'SET_APPLICATION_DATA'
+  const SET_INTERVIEW = 'SET_INTERVIEW'
+  const reducer = function(state, action) {
+    const { type, input } = action;
+
+    const SET_DAY = function(value) {
+      return { ...state, day: value }
+    }
+
+    const SET_APPLICATION_DATA = function(value) {
+      return ({ ...state, "days": value[0], "appointments": value[1], "interviewers": value[2] })
+    }
+
+    const SET_INTERVIEW = function(value) {
+      if (value.interview) {
+        const appointment = {
+          ...state.appointments[value.id],
+          interview: { ...value.interview }
+        };
+        return ({
+          ...state,
+          appointments: { ...state.appointments, [value.id]: appointment }
+        })
+
+      } else {
+        const appointment = {
+          ...state.appointments[value.id],
+          interview: null
+        }
+        return ({
+          ...state, appointments: { ...state.appointments, [value.id]: appointment }
+        })
+      }
+    }
+
+    const cases = {
+      SET_DAY,
+      SET_APPLICATION_DATA,
+      SET_INTERVIEW,
+
+    }
+    return (cases[type] || (() => { throw new Error() }))(input);
+  }
+  const initState = {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
-  });
-  const setDay = day => setState({ ...state, day });
-  useEffect(() => {
-
-    Promise.all([
-      axios.get('/api/days')
-        .then(response => response.data)
-        .catch(function(error) {
-          console.log(error);
-        }),
-      axios.get('/api/appointments')
-        .then(response => response.data)
-        .catch(function(error) {
-          console.log(error);
-        }),
-      axios.get('/api/interviewers')
-        .then(response => response.data)
-        .catch(function(error) {
-          console.log(error);
-        })
-    ])
-      .then(all => {
-        setState(prev => ({ ...prev, "days": all[0], "appointments": all[1], "interviewers": all[2] }))
-      });
-  }, [])
-
-
-  const bookInterview = function(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    return axios.put(`/api/appointments/${id}`, {
-      interview: {
-        student: interview.student,
-        interviewer: interview.interviewer
-      }
-    })
-      .then(res => {
-        setState(state => ({
-          ...state,
-          appointments: { ...state.appointments, [id]: appointment }
-        }))
-      }
-      )
   }
-  const cancelInterview = function(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    }
-    return axios.delete(`/api/appointments/${id}`)
-      .then(res => {
-
-        setState(state =>
-          ({
-            ...state,
-            appointments: { ...state.appointments, [id]: appointment }
-          })
-        )
-      }
-      )
-  }
-
-
-  return ({
-    state,
-    setDay,
-    bookInterview,
-    cancelInterview
-  })
+  const [state, dispatch] = useReducer(reducer, initState)
+  return { state, dispatch, SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW }
 }
+
+
+

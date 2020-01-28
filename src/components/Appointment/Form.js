@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import InterviewerList from '../InterviewerList';
 import Button from '../Button';
-import Confirm from './Confirm'
 
 export default function Form(props) {
-  const [state, setState] = useState({
-    name: '',
-    interviewer: props.interviewer
-  })
   const [name, setName] = useState(prev => props.interview.student || "");
   const [interviewer, setInterviewer] = useState(prev => { if (props.interview.interviewer) { 
     return props.interview.interviewer.id 
   } else { return null } });
   const reset = () => { setName(''); setInterviewer(null) }
   const cancel = () => { reset(); props.onCancel(); }
-  console.log('name', name, 'interviewer', interviewer)
-  console.log('interview', props.interview)
+  //console.log('name', name, 'interviewer', interviewer)
+  //console.log('interview', props.interview)
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
