@@ -49,6 +49,7 @@ export default function Application(props) {
     const input = {id}
     return axios.delete(`/api/appointments/${input.id}`)
     .then (dispatch({ type: SET_INTERVIEW, input }))
+
   }
 
   const bookInterview = function(id, interview) {
@@ -60,6 +61,7 @@ export default function Application(props) {
       }
     })
       .then(dispatch({ type: SET_INTERVIEW, input }))
+  
   }
 
 
