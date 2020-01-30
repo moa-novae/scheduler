@@ -4,11 +4,15 @@ import Button from '../Button';
 
 export default function Form(props) {
   const [name, setName] = useState(prev => props.interview.student || "");
-  const [interviewer, setInterviewer] = useState(prev => { if (props.interview.interviewer) { 
-    return props.interview.interviewer.id 
-  } else { return null } });
+  const [error, setError] = useState(prev => '')
+  const [interviewer, setInterviewer] = useState(prev => {
+    if (props.interview.interviewer) {
+      return props.interview.interviewer.id
+    } else { return null }
+  });
   const reset = () => { setName(''); setInterviewer(null) }
   const cancel = () => { reset(); props.onCancel(); }
+  
   //console.log('name', name, 'interviewer', interviewer)
   //console.log('interview', props.interview)
   return (
@@ -20,13 +24,11 @@ export default function Form(props) {
             className="appointment__create-input text--semi-bold"
             value={name || ''}
             type="text"
-            placeholder="Enter Student name"
-
-          /*
-            This must be a controlled component
-          */
+            placeholder="Enter Student Name"
+            data-testid="student-name-input"
           />
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           interviewer={interviewer || null}
@@ -34,8 +36,8 @@ export default function Form(props) {
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button danger onClick={() => cancel()}>Cancel</Button>
-          <Button confirm onClick={() => props.onSave(name, interviewer)}>Save</Button>
+          <Button danger onClick={() => {setError(''); cancel()}}>Cancel</Button>
+          <Button confirm onClick={() => { if (!name) { setError('Student name cannot be blank') } else { props.onSave(name, interviewer); setError('') } }}>Save</Button>
         </section>
       </section>
     </main>

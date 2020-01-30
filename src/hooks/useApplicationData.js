@@ -4,7 +4,6 @@ export function useApplicationData() {
   const SET_DAY = 'SET_DAY'
   const SET_APPLICATION_DATA = 'SET_APPLICATION_DATA'
   const SET_INTERVIEW = 'SET_INTERVIEW'
-  const SET_SPOTS_LEFT = 'SET_SPOTS_LEFT'
   const reducer = function(state, action) {
     const { type, input } = action;
 

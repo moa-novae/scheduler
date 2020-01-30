@@ -7,7 +7,7 @@ export default function DayList(props) {
   if (days) {
     outputs = days.map(element => {
       return (
-        <ul>
+        <ul key={element.name}>
           <DayListItem
             name={element.name}
             spots={element.spots}
