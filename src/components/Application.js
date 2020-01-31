@@ -14,10 +14,12 @@ import {useApplicationData} from '../hooks/useApplicationData';
 export default function Application(props) {
   const {state, dispatch, SET_APPLICATION_DATA, SET_INTERVIEW, SET_DAY} = useApplicationData();
   const getWeeklyAppointments = useCallback((input) => {
+    console.log('getweekly', state)
     dispatch({ type: SET_APPLICATION_DATA, input })
   }, [SET_APPLICATION_DATA, dispatch])
 
   useEffect(() => {
+  
     Promise.all([
       axios.get('/api/days')
         .then(response => response.data)
@@ -34,14 +36,17 @@ export default function Application(props) {
         .catch(function(error) {
           console.log(error);
         })
-    ])
-      .then(all => getWeeklyAppointments(all))
+      ])
+      .then(all => {console.log('all', all); getWeeklyAppointments(all)})
+
+
   },[getWeeklyAppointments])
 
   const appointments = getAppointmentsForDay(state, state.day)
   const interviewersList = getInterviewersForDay(state, state.day)
-
+ // console.log('appstate', state)
   const setDay = function(input) {
+    console.log('setday', state)
     dispatch({ type: SET_DAY, input })
   }
 
@@ -51,8 +56,9 @@ export default function Application(props) {
     .then (dispatch({ type: SET_INTERVIEW, input }))
 
   }
-
+  
   const bookInterview = function(id, interview) {
+    console.log('book', state)
     const input = { id, interview }
     return axios.put(`/api/appointments/${input.id}`, {
       interview: {
@@ -60,7 +66,7 @@ export default function Application(props) {
         interviewer: input.interview.interviewer
       }
     })
-      .then(dispatch({ type: SET_INTERVIEW, input }))
+      .then(() => dispatch({ type: SET_INTERVIEW, input }))
   
   }
 
@@ -69,8 +75,10 @@ export default function Application(props) {
 
   const appoint = (appointments).map((appointment) => {
     const interviewerProfile = getInterview(state, appointment.interview)
+   // console.log('applicationstate', state) broken before here
     return (
       <Appointment
+        state={state}
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
@@ -93,6 +101,7 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu" >
           <DayList
+            state={state}
             days={state.days}
             day={state.day}
             appointments={state.appointments}

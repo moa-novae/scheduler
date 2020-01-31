@@ -28,17 +28,22 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-
+  let interviewObj;
+  if (!props.interview){
+    interviewObj = {student:'', interviewer: null}
+  } else {
+    interviewObj = props.interview;
+  }
   function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer
     }
+    console.log('appoitstate', props.state)
     transition(SAVING)
     props.bookInterview(props.id, interview)
       .then(() => { return transition(SHOW) })
       .catch((error) => transition(ERROR_SAVE, true))
-    //console.log('props.interview',props.interview)
   }
 
   function remove(id) {
@@ -46,12 +51,8 @@ export default function Appointment(props) {
     transition(DELETING, true)
     props.deleteInterview(id)
       .then(() => transition(EMPTY))
-      .catch((error) => transition(ERROR_DELETE, true))
-    
+      .catch((error) => transition(ERROR_DELETE, true))    
   }
-
-
-
 
   return (
     <article data-testid="appointment" className="appointment">
@@ -60,17 +61,20 @@ export default function Appointment(props) {
 
       {mode === SHOW && (
         <Show
-          student={props.interview.student}
-          interviewer={props.interview.interviewer}
+          student={interviewObj.student }
+          interviewer={interviewObj.interviewer }
           onDelete={() => transition(CONFIRM)}
-          onEdit={() => transition(CREATE)}
+          onEdit={() =>  transition(CREATE)}
           interview={props.interview}
         />
       )}
-      {mode === CREATE && <Form interviewers={props.interviewers}
+      {mode === CREATE && <Form 
+        interviewers={props.interviewers}
         interview={props.interview || { student: '', interviewer: null }}
         onCancel={() => back()}
-        onSave={save} />}
+        onSave={save} 
+        state={props.state}
+        />}
       {mode === SAVING && <Status message="Saving" />}
 
       {mode === CONFIRM && <Confirm message="Are you sure you would like to DELETE?" onCancel={() => back()} onConfirm={() => remove(props.id)} />}

@@ -3,18 +3,16 @@ import InterviewerList from '../InterviewerList';
 import Button from '../Button';
 
 export default function Form(props) {
+  console.log('propsstate',props.state);
   const [name, setName] = useState(prev => props.interview.student || "");
   const [error, setError] = useState(prev => '')
   const [interviewer, setInterviewer] = useState(prev => {
     if (props.interview.interviewer) {
       return props.interview.interviewer.id
-    } else { return null }
+    } 
   });
   const reset = () => { setName(''); setInterviewer(null) }
   const cancel = () => { reset(); props.onCancel(); }
-  
-  //console.log('name', name, 'interviewer', interviewer)
-  //console.log('interview', props.interview)
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -37,7 +35,7 @@ export default function Form(props) {
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={() => {setError(''); cancel()}}>Cancel</Button>
-          <Button confirm onClick={() => { if (!name) { setError('Student name cannot be blank') } else { props.onSave(name, interviewer); setError('') } }}>Save</Button>
+          <Button confirm onClick={() => { if (!name) { setError('Student name cannot be blank') } else {console.log('formstate', props.state) ;props.onSave(name, interviewer); setError('') } }}>Save</Button>
         </section>
       </section>
     </main>
