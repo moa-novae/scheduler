@@ -18,16 +18,15 @@ export function getAppointmentsForDay (state, day) {
 }
 
 export function getInterview (state, app) {
-  let output = app;
   if (app){
-  const interviewerId = app.interviewer
-  let profile = state.interviewers[interviewerId]
-  output.interviewer = profile;
-  return output;
+    const interviewerId = app.interviewer
+    let profile = state.interviewers[interviewerId]
+    return { ...app, interviewer: profile };
   } else {
     return null;
   }
 }
+
 
 export function getInterviewersForDay (state, day) {
   let filteredDay = state.days.filter(entry => entry.name === day)

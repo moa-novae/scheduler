@@ -1,10 +1,9 @@
 import React from "react";
-import DayListItem from "DayListItem";
+import DayListItem from "components/DayListItem";
 
 export default function DayList(props) {
   const { days } = props;
   let outputs;
-  //console.log('daylist', props.state) broken before daylist
   if (days) {
     outputs = days.map(element => {
       return (

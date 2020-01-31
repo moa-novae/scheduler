@@ -43,18 +43,18 @@ export default function Application(props) {
   },[getWeeklyAppointments])
 
   const appointments = getAppointmentsForDay(state, state.day)
+
+
   const interviewersList = getInterviewersForDay(state, state.day)
  // console.log('appstate', state)
   const setDay = function(input) {
-    console.log('setday', state)
     dispatch({ type: SET_DAY, input })
   }
 
   const deleteInterview = function(id) {
-    const input = {id}
-    return axios.delete(`/api/appointments/${input.id}`)
-    .then (dispatch({ type: SET_INTERVIEW, input }))
-
+    return axios.delete(`/api/appointments/${id}`)
+    .then (() => dispatch({ type: SET_INTERVIEW, id }))
+  
   }
   
   const bookInterview = function(id, interview) {
@@ -75,7 +75,6 @@ export default function Application(props) {
 
   const appoint = (appointments).map((appointment) => {
     const interviewerProfile = getInterview(state, appointment.interview)
-   // console.log('applicationstate', state) broken before here
     return (
       <Appointment
         state={state}

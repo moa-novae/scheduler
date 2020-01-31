@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import DayListItem from "../src/DayListItem.js"
+import DayListItem from "../src/components/DayListItem.js/index.js"
 import DayList from "../src/components/DayList.js"
 import InterviewerListItem from "../src/components/InterviewerListItem.js"
 import InterviewerList from "../src/components/InterviewerList.js"

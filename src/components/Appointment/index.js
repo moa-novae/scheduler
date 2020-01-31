@@ -33,13 +33,13 @@ export default function Appointment(props) {
     interviewObj = {student:'', interviewer: null}
   } else {
     interviewObj = props.interview;
+    
   }
   function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer
     }
-    console.log('appoitstate', props.state)
     transition(SAVING)
     props.bookInterview(props.id, interview)
       .then(() => { return transition(SHOW) })
@@ -53,7 +53,9 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch((error) => transition(ERROR_DELETE, true))    
   }
-
+  
+  console.log('app', props.state)
+  
   return (
     <article data-testid="appointment" className="appointment">
       <Header time={props.time} />
