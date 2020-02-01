@@ -27,13 +27,11 @@ export default function reducer (state, action) {
       return { ...state, day: value }
     }
     const SET_APPLICATION_DATA = function(value) {
-      const check = { ...state, "days": value[0], "appointments": value[1], "interviewers": value[2] }
-      console.log('check', check)
       return ({ ...state, "days": value[0], "appointments": value[1], "interviewers": value[2] })
     }
 
     const SET_INTERVIEW = function(value) {
-  
+      debugger;
       let appointment;
       if (value.interview) {
         appointment = {
@@ -52,7 +50,6 @@ export default function reducer (state, action) {
           appointments: { ...state.appointments, [value.id]: appointment }
         }
         const output = SET_SPOTS_LEFT(update);
-        console.log('out',output)
         return (output)
       
     }

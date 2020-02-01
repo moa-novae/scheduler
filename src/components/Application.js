@@ -14,7 +14,6 @@ import {useApplicationData} from '../hooks/useApplicationData';
 export default function Application(props) {
   const {state, dispatch, SET_APPLICATION_DATA, SET_INTERVIEW, SET_DAY} = useApplicationData();
   const getWeeklyAppointments = useCallback((input) => {
-    console.log('getweekly', state)
     dispatch({ type: SET_APPLICATION_DATA, input })
   }, [SET_APPLICATION_DATA, dispatch])
 
@@ -37,7 +36,7 @@ export default function Application(props) {
           console.log(error);
         })
       ])
-      .then(all => {console.log('all', all); getWeeklyAppointments(all)})
+      .then(all => {getWeeklyAppointments(all)})
 
 
   },[getWeeklyAppointments])
