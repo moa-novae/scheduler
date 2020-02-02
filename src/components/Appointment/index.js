@@ -9,12 +9,7 @@ import Form from './Form'
 import Status from './Status'
 import Error from './Error'
 
-
-
 export default function Appointment(props) {
-
-
-
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
@@ -24,7 +19,7 @@ export default function Appointment(props) {
   const ERROR_SAVE = 'ERROR_SAVE'
   const ERROR_DELETE = 'ERROR_DELETE'
 
-
+  //Keeps track of the display state 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -33,8 +28,8 @@ export default function Appointment(props) {
     interviewObj = {student:'', interviewer: null}
   } else {
     interviewObj = props.interview;
-    
   }
+
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -53,8 +48,6 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch((error) => transition(ERROR_DELETE, true))    
   }
-  
-  console.log('app', props.state)
   
   return (
     <article data-testid="appointment" className="appointment">

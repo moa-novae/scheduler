@@ -2,14 +2,11 @@ import React from "react";
 import InterviewerListItem from "./InterviewerListItem";
 import '../styles/interviewerList.scss'
 import PropTypes from 'prop-types';
-
+//componenet containing list of interviewers available
 export default function InterviewerList(props) {
- 
   const { interviewers, setInterviewer} = props;
   const outputs = interviewers.map(interviewer => {
-    
     return (
-          
           <InterviewerListItem
             key={interviewer.id}
             id={interviewer.id}
@@ -17,7 +14,6 @@ export default function InterviewerList(props) {
             avatar={interviewer.avatar} 
             selected={interviewer.id === props.interviewer}
             setInterviewer={setInterviewer}/>
-          
       )
     })
     return (
@@ -27,7 +23,6 @@ export default function InterviewerList(props) {
         {outputs}
       </ul>
       </section>
-      
     )
 }
 //not sure why propTypes doesn't work

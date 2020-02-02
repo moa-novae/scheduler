@@ -1,3 +1,4 @@
+//Mock function for Jest testing 
 const fixtures = {
   days: [
     {

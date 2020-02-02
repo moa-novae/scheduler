@@ -1,5 +1,5 @@
 import React from "react";
-
+//Displays  appointment information
 export default function Show(props) {
   return (
     <main className="appointment__card appointment__card--show">

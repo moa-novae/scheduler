@@ -1,6 +1,6 @@
 import Button from "../Button";
 import React from "react";
-
+//pop up message asking for confirmation
 export default function Confirm (props) {
   return (
     <main className="appointment__card appointment__card--confirm">

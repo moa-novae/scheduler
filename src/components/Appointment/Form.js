@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import InterviewerList from '../InterviewerList';
 import Button from '../Button';
-
+//Creates an input field for creating appointments
 export default function Form(props) {
-  console.log('propsstate',props.state);
   const [name, setName] = useState(prev => props.interview.student || "");
   const [error, setError] = useState(prev => '')
   const [interviewer, setInterviewer] = useState(prev => {
@@ -35,7 +34,7 @@ export default function Form(props) {
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={() => {setError(''); cancel()}}>Cancel</Button>
-          <Button confirm onClick={() => { if (!name) { setError('Student name cannot be blank') } else {console.log('formstate', props.state) ;props.onSave(name, interviewer); setError('') } }}>Save</Button>
+          <Button confirm onClick={() => { if (!name) { setError('Student name cannot be blank') } else {props.onSave(name, interviewer); setError('') } }}>Save</Button>
         </section>
       </section>
     </main>

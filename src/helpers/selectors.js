@@ -16,7 +16,7 @@ export function getAppointmentsForDay (state, day) {
 
   return output;
 }
-
+//return interview object containing student name and interviewer details
 export function getInterview (state, app) {
   if (app){
     const interviewerId = app.interviewer
@@ -26,7 +26,6 @@ export function getInterview (state, app) {
     return null;
   }
 }
-
 
 export function getInterviewersForDay (state, day) {
   let filteredDay = state.days.filter(entry => entry.name === day)

@@ -1,7 +1,8 @@
 import { useReducer } from "react";
 import reducer, {SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW} from '../reducers/application'
-export function useApplicationData() {
 
+//reducer for managing the general states
+export function useApplicationData() {
   const initState = {
     day: "Monday",
     days: [],
@@ -9,7 +10,6 @@ export function useApplicationData() {
     interviewers: {},
   }
   const [state, dispatch] = useReducer(reducer, initState)
-  
   return { state, dispatch, SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW }
 }
 
