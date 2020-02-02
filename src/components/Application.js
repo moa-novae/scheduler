@@ -48,7 +48,6 @@ export default function Application(props) {
   }
   const deleteInterview = function(id) {
     const input = { id };
-    debugger;
     return axios.delete(`/api/appointments/${id}`)
       .then(() => dispatch({ type: SET_INTERVIEW, input }))
   }
