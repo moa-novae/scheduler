@@ -8,10 +8,22 @@ export default function Form(props) {
   const [interviewer, setInterviewer] = useState(prev => {
     if (props.interview.interviewer) {
       return props.interview.interviewer.id
-    } 
+    }
   });
   const reset = () => { setName(''); setInterviewer(null) }
   const cancel = () => { reset(); props.onCancel(); }
+  const checkIfFieldsFilled = function(name, interviewer) {
+    let errString = ''
+    if (!name) {
+      errString += 'Student name cannot be blank '
+    } if (!interviewer){
+      errString += 'An interviewer must be chosen'
+    }
+    if (errString){
+      setError(errString)
+    }
+    else { props.onSave(name, interviewer); setError('') }
+  }
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -33,8 +45,8 @@ export default function Form(props) {
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button danger onClick={() => {setError(''); cancel()}}>Cancel</Button>
-          <Button confirm onClick={() => { if (!name) { setError('Student name cannot be blank') } else {props.onSave(name, interviewer); setError('') } }}>Save</Button>
+          <Button danger onClick={() => { setError(''); cancel() }}>Cancel</Button>
+          <Button confirm onClick={() => {checkIfFieldsFilled(name, interviewer)}}>Save</Button>
         </section>
       </section>
     </main>
